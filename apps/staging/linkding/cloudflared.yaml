@@ -48,44 +48,12 @@ spec:
       - name: creds
         secret:
           secretName: tunnel-credentials
-
-      # Create a config.yaml file from the ConfigMap below.
+      # Create the config.yaml file from a secret instead from a configMap.
+      # This way config parameters like the hostname don't have to be published.
+      # Downside: To keep it simple, also the other non-sensitive parameters of the config.yaml are encrypted in the secret.
       - name: config
-        configMap:
-          name: cloudflared
+        secret:
+          secretName: cloudflared-config
           items:
           - key: config.yaml
             path: config.yaml
----
-# This ConfigMap is just a way to define the cloudflared config.yaml file in k8s.
-# It's useful to define it in k8s, rather than as a stand-alone .yaml file, because
-# this lets you use various k8s templating solutions (e.g. Helm charts) to
-# parameterize your config, instead of just using string literals.
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: cloudflared
-  namespace: linkding
-data:
-  config.yaml: |
-    # Name of the tunnel you want to run
-
-    tunnel: linkding-tunnel
-
-    credentials-file: /etc/cloudflared/creds/credentials.json
-
-    # Serves the metrics server under /metrics and the readiness server under /ready
-    metrics: 0.0.0.0:2000
-    no-autoupdate: true
-
-    ingress:
-    - hostname: ${TUNNEL_HOSTNAME}
-      service: ${SERVICE_PORT}
-
-    # This rule sends traffic to the built-in hello-world HTTP server. This can help debug connectivity
-    # issues. If hello.example.com resolves and tunnel.example.com does not, then the problem is
-    # in the connection from cloudflared to your local service, not from the internet to cloudflared.
-    - hostname: hello.example.com
-      service: hello_world
-    # This rule matches any traffic which didn't match a previous rule, and responds with HTTP 404.
-    - service: http_status:404

@@ -4,3 +4,4 @@ resources:
   - ../../base/linkding/
   - secret.yaml
   - cloudflared.yaml
+  - cloudflared-config.yaml
