@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: cloudflared-config
+    namespace: linkding
+stringData:
+    config.yaml: ENC[AES256_GCM,data:9QM+uOcO5VD1QMYS6cb880UV2Azbi15OBUok1D/5M7+5t/pccrXHM12H4acSI4aGdfljwmRagfYhlvivJc7p/YqG+bBgAPZzmj+f6L9Zh3eGfPZUO8QsXcDKhSdPbz06iHsm3M3zdiLmFfOMDGuWnk490QTxOdW5tafc1fYhHE7yWD+gwMvwnPOGdOwJiXlZYJR8KT26sBA+tQW0stDgfoTdg9utrtK0OVrKCXlc+wsJfEK/tQCQ2Bh2xQ3X9Pt3WOOWyU5PrxCGCIy68Hlcf5l6+kWjZzqku5UsRJY0LZ5Ai4dcmw==,iv:bh0mIGHmh7LZOX+4syX0CzW/I/aiv/3jhN7UMQ6n3r8=,tag:oJ/FQa6ugFucytkEWCCvZg==,type:str]
+sops:
+    age:
+        - recipient: age1fnjrxtk0cndvgz9sa65f4yv98xygl93nnutltd7s6t6jph0wwywqesleq8
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBURTdwVEZRUGlPVVBKSmlF
+            QnE0YjdaYzhBVm1NNGVwNDJsN1lWRjZKbFQ0ClZNczJnVHdPRnJJdDBXNTNxWDd0
+            SW1RMGVONTlQSGY3ajh6WFJjR1ZnNFEKLS0tIGo1VUY4ZFpvb1AxdXozUEd6N2N5
+            eE9MZVpXN1E2djJ2ekVvcE5rREc5TTgKSZjdeghwgSTAYUL0dqDczX0IB+kpVYRW
+            jRyY4QvY/vKJD1gZMNPuWdND94QRsyAu7kntkyB25Zxmo8+9q9oUTQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-03-06T18:12:22Z"
+    mac: ENC[AES256_GCM,data:BgypxC8+rTGObsArXE7oNXgXAFUFqSBT9FFiLcbPtjsJ1cyVPd4OrRlUwxQYb12bUI96eLxb5h49fcUaX63bIwRNLMJ2z1NZQnCQcLe7b/qghPPa9kC6iVBreKFw9y+gPyBFSEMa+iEqcLkwkZ/HPtPRAymqwPLg2epgdbmfzgY=,iv:t8K36nI5oymvhKJ2uMWMSCfMrfvll3KH3+TZo+QqapI=,tag:/vUNNcPPNqUdQbi84bCFnQ==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.12.1
