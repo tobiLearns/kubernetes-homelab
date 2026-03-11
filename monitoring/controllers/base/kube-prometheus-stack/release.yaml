@@ -29,8 +29,8 @@ spec:
   values:
     grafana:
       adminPassword: mischa
-    ingress:
-      enabled: true
-      ingressClassName: traefik
-      hosts:
-        - grafana.homelab.net
+      ingress:
+        enabled: true
+        ingressClassName: traefik
+        hosts:
+          - grafana.homelab.net
