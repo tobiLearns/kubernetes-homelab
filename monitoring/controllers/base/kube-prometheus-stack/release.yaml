@@ -34,3 +34,8 @@ spec:
         ingressClassName: traefik
         hosts:
           - grafana.homelab.net
+        tls:
+          - secretName: grafana-tls-secret
+            hosts:
+              - grafana.homelab.net
+
