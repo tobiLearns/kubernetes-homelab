@@ -5,4 +5,5 @@ resources:
   - storage.yaml
   - deployment.yaml
   - service.yaml
+  - configMap.yaml
     #  - secret-superuser.yaml

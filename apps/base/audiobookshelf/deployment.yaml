@@ -23,6 +23,9 @@ spec:
             - containerPort: 3005
           securityContext:
             allowPrivilegeEscalation: false
+          envFrom:
+            - configMapRef:
+                name: audiobookshelf-configmap
           volumeMounts:
           - mountPath: /audiobooks
             name: audiobookshelf-audiobooks
