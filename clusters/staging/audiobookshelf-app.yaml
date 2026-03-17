@@ -13,3 +13,7 @@ spec:
   path: ./apps/staging/audiobookshelf
   prune: true
   targetNamespace: audiobookshelf
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
