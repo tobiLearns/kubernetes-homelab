@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Secret
+metadata:
+    name: audiobookshelf-cloudflared-config
+stringData:
+    config.yaml: ENC[AES256_GCM,data:dwJw7mTIb5byaDeC0Mp2DIZBQEKLS2FUhBUDUm9bhXsdkmt8cgfByfuQJjylsPLWnYzURuWe6lSKg22qAibh1GrDQELBFjEpFKbxX8/YwJLIxaK4Eotmae9+wx9pRC+jnw7zeSxeHbILQDkvAhqkCmx2CpqVuob/UAkwnRcROpDMTgAV+uyGpsvNVbUzBdAP9n1DZzUk9oT2x3qvs1H64FniVtc/gbTohWD5FRiYC6hGPtK4blOhZ6DR+y7xFUdWdv4rnAi7N8tnb3TiJ+hRD77LAJ1JIbFw/hpV9FoP5s4Hv/Y4cNWuR80NCDvNnvqqThXcdWID0g==,iv:LkR2DrI+09k4Ur61jiN7C+8F/2q2VMtQ59zmSfYVFPA=,tag:WUBt1M0WeGTLkFXr1ycbFQ==,type:str]
+sops:
+    age:
+        - recipient: age1fnjrxtk0cndvgz9sa65f4yv98xygl93nnutltd7s6t6jph0wwywqesleq8
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBEY0FnS3lZbkE4VHZnS0w1
+            b29xRm1QR2Zld0FtSnBwZkkrN1V2MDdQMEhJCnFDM3dqSDk1YlM3dUN0Q3VYYUFu
+            UHVDSXhlUnRDZGxwZ2ladjllRmZOZGMKLS0tIFBCZmJ3bTFoekVUTTluaTViM2wx
+            SUtpeFRyMG1ZWDdJOUtyb1ZtN25rUWcKSFxrpFiXKXfl/bD6YCNDiyrFbhU6QJTm
+            MJjZJrzWZC2u0nPt2mxdyzU7eNi8NpDWyu/pJRpAR3oSz+YHLfHS8A==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-03-17T18:07:00Z"
+    mac: ENC[AES256_GCM,data:ZjEo0L3h1qtEqEmVEv8X8i02S3dA+Kk7nTDqS0HVEmd93KJD8eFZyNCHSMtcqM1t5GVNVe0udcTvFXR4GQUHSIJ9PT8RkSwI6tAq2+/yaJNLqnt+6CiHyDMTzGaG5S4I07zKKh6WCLX9q435HCUTbSfDRsngwgt2sj4n/HQE6T4=,iv:AMcIqlqv/oeILNcmW5aKLbCjVGhr+ugzImprstgb6hY=,tag:/qik4Ov5+oX4fJl2bdvMmg==,type:str]
+    encrypted_regex: ^(data|stringData)$
+    version: 3.12.1
