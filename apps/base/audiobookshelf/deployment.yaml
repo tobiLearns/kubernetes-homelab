@@ -18,6 +18,11 @@ spec:
           ports:
             - containerPort: 3005
               protocol: TCP
+          securityContext:
+            fsGroup: 1000 # node group ID
+            runAsUser: 1000 # node user ID
+            runAsGroup: 1000 # node group ID
+            allowPrivilegeEscalation: false
           envFrom:
             - configMapRef:
                 name: audiobookshelf-configmap
