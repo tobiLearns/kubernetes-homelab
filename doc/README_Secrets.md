@@ -1,4 +1,6 @@
-[<p style="text-align:right;">back to main README</p>](./README.md)
+[back to main README](../README.md)
+
+---
 ## Save handling of Secrets
 ### SOPS
 Secrets can be encrypted with [SOPS](https://github.com/getsops/sops) using an *age* key and committed to the repository.
@@ -61,4 +63,5 @@ Secrets can be encrypted with [SOPS](https://github.com/getsops/sops) using an *
   ````
     - Using this file with the `sops`-command didn't work for me, yet.
 
-[<p style="text-align:right;">back to main README</p>](./README.md)
+---
+[back to main README](../README.md)

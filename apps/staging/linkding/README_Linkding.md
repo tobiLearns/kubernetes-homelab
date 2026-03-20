@@ -1,4 +1,6 @@
-[<p style="text-align:right;">back to main README</p>](./README.md)
+[back to main README](../../../README.md)
+
+---
 ### Linkding
 [Linkding](https://github.com/sissbruecker/linkding) is a self-hosted bookmark manager, exposed to the internet via a Cloudflare Tunnel.
 
@@ -46,4 +48,5 @@ The cloudflared `config.yaml` is stored as a SOPS-encrypted Kubernetes **Secret*
 
 **Alternative considered:** splitting the config into a ConfigMap (non-sensitive settings) and a Secret (hostname only), combined at runtime via an init container. This was rejected because it adds significant complexity (init container, shell script, emptyDir volume) for a small, mostly static config file. Encrypting the whole file is simpler.
 
-[<p style="text-align:right;">back to main README</p>](./README.md)
+---
+[back to main README](../../../README.md)

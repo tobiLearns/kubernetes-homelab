@@ -1,4 +1,6 @@
-[<p style="text-align:right;">back to main README</p>](./README.md)
+[back to main README](../README.md)
+
+---
 ## Helm Charts in Flux
 - Add certain Helm Repository to the cluster:
   ````yaml
@@ -45,4 +47,5 @@
     - Set desired options (deviating from default values) in the `values`-object
 - An example usage of a Helm chart in Flux can be found in the `monitoring`-directory of this repo.
 
-[<p style="text-align:right;">back to main README</p>](./README.md)
+---
+[back to main README](../README.md)

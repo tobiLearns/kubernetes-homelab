@@ -1,4 +1,6 @@
-[<p style="text-align:right;">back to main README</p>](./README.md)
+[back to main README](../README.md)
+
+---
 ## Access to Applications via Cloudflare-Tunnel
 
 To make a locally hosted application securely accessible from the internet, this setup uses a Cloudflare Tunnel. A Cloudflare Tunnel creates an outbound-only connection from a host inside your network to Cloudflare's edge — no open inbound ports or public IP required. The `cloudflared` daemon running on your host establishes the tunnel and proxies traffic to local services. Cloudflare routes incoming requests for your domain through the tunnel to the target service, while your network remains fully shielded behind your firewall.
@@ -71,4 +73,5 @@ To make a locally hosted application securely accessible from the internet, this
             - Field "name" represents the later subdomain, under which the tunnel is accessible
             - Field "target" has to be `<tunnel-ID>.cfargotunnel.com`
 
-[<p style="text-align:right;">back to main README</p>](./README.md)
+---
+[back to main README](../README.md)

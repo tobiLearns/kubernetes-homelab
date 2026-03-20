@@ -1,4 +1,6 @@
-[<p style="text-align:right;">back to main README</p>](./README.md)
+[back to main README](../README.md)
+
+---
 ## TLS Certificate
 To encrypt the connection to an application in the cluster, a TLS certificate can be used:
 
@@ -23,4 +25,5 @@ To encrypt the connection to an application in the cluster, a TLS certificate ca
 4. Use the secret in an application (e.g., refer to the secret in the `values` of a Helm release, as done in the `monitoring`-directory.)
 5. Don't forget to decrypt the secret in the corresponding Kustomization-file.
 
-[<p style="text-align:right;">back to main README</p>](./README.md)
+---
+[back to main README](../README.md)

@@ -1,4 +1,6 @@
-[<p style="text-align:right;">back to main README</p>](./README.md)
+[back to main README](../README.md)
+
+---
 ## Automated Image Updates
 ### Image Updates with *Mend Renovate*
 - Mend Renovate is an automated dependency update tool that helps you update dependencies in your code. When Renovate runs in your repo, it looks for references to dependencies (both public and private) and, if newer versions are available, Renovate can create pull requests to update the versions. [[from the Renovate-Docs]](https://docs.mend.io/renovate/latest/)
@@ -14,4 +16,5 @@
   And encrypted with SOPS.
 - In the repository root directory a file `renovate.json` is needed, which defines, which files in the repository shall be checked for new versions.
 
-[<p style="text-align:right;">back to main README</p>](./README.md)
+---
+[back to main README](../README.md)

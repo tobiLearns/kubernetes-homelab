@@ -1,4 +1,6 @@
-[<p style="text-align:right;">back to main README</p>](./README.md)
+[back to main README](../README.md)
+
+---
 ## GitOps with Flux
 
 This cluster is managed by [Flux](https://fluxcd.io/), a GitOps operator that runs inside the cluster and continuously reconciles its state with this repository. There is no manual `kubectl apply` — every change is made by editing files in the repo and pushing to `main`.
@@ -18,4 +20,5 @@ apps/base/           # Base manifests, shared across environments
 apps/staging/        # Staging overlays — environment-specific config and secrets
 ```
 
-[<p style="text-align:right;">back to main README</p>](./README.md)
+---
+[back to main README](../README.md)
