@@ -14,7 +14,7 @@ spec:
             - name: renovate
               image: renovate/renovate:latest
               args:
-                - tobiLearns/homelab-k3s
+                - tobiLearns/kubernetes-homelab
 
               envFrom:
                 - secretRef:
