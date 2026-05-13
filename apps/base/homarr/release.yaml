@@ -32,7 +32,7 @@ spec:
         # -- homarr-database persistent storage name
         name: "homarr-database"
         # -- homarr-database storage class name
-        storageClassName: "default"
+        storageClassName: "local-path"
         # -- homarr-database access mode
         # accessMode: "ReadWriteOnce"
         # -- homarr-database storage size
