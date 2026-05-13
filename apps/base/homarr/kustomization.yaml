@@ -4,3 +4,5 @@ resources:
   - namespace.yaml
   - repository.yaml
   - release.yaml
+  - secret-db-encryption.yaml
+  - secret-tls.yaml
