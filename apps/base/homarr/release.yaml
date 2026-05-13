@@ -15,4 +15,29 @@ spec:
         name: homarr-dashboard
         namespace: homarr
       interval: 24h
-
+  values:
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      hosts:
+        - host: homarr.homelab.net
+      tls:
+        - secretName: homarr-tls-secret
+          hosts:
+            - homarr.homelab.net
+    persistence:
+      homarrDatabase:
+        # -- Enable homarr-database persistent storage
+        enabled: true
+        # -- homarr-database persistent storage name
+        name: "homarr-database"
+        # -- homarr-database storage class name
+        storageClassName: "default"
+        # -- homarr-database access mode
+        # accessMode: "ReadWriteOnce"
+        # -- homarr-database storage size
+        size: "50Mi"
+        # -- homarr-database mount path inside the pod
+        mountPath: "/appdata"
+        # -- homarr-database optional volumeClaimName to target specific PV
+        # volumeClaimName: ""
