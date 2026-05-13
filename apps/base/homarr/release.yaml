@@ -30,17 +30,10 @@ spec:
             - homarr.homelab.net
     persistence:
       homarrDatabase:
-        # -- Enable homarr-database persistent storage
         enabled: true
-        # -- homarr-database persistent storage name
         name: "homarr-database"
-        # -- homarr-database storage class name
         storageClassName: "local-path"
-        # -- homarr-database access mode
-        # accessMode: "ReadWriteOnce"
-        # -- homarr-database storage size
+        accessMode: "ReadWriteOnce"
         size: "50Mi"
-        # -- homarr-database mount path inside the pod
         mountPath: "/appdata"
-        # -- homarr-database optional volumeClaimName to target specific PV
-        # volumeClaimName: ""
+        volumeClaimName: ""
