@@ -21,6 +21,9 @@ spec:
       ingressClassName: "traefik"
       hosts:
         - host: homarr.homelab.net
+          paths:                     # <-- THIS BLOCK IS REQUIRED
+            - path: /
+              pathType: ImplementationSpecific
       tls:
         - secretName: homarr-tls-secret
           hosts:
