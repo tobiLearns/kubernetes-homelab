@@ -28,7 +28,7 @@ spec:
     persistence:
       homarrDatabase:
         # -- Enable homarr-database persistent storage
-        enabled: true
+        enabled: false
         # -- homarr-database persistent storage name
         name: "homarr-database"
         # -- homarr-database storage class name
