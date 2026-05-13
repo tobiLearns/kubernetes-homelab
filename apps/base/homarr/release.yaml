@@ -18,7 +18,7 @@ spec:
   values:
     ingress:
       enabled: true
-      ingressClassName: traefik
+      ingressClassName: "traefik"
       hosts:
         - host: homarr.homelab.net
       tls:
