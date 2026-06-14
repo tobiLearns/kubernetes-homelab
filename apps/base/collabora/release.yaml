@@ -15,3 +15,10 @@ spec:
         name: collabora-online
         namespace: collabora
       interval: 24h
+  values:
+    # One replica is enough for my current use case:
+    replicaCount: 1
+    # According to the documentation, the Horizontal Pod Autoscaling should be disabled for now,
+    # since it breaks some other features:
+    autoscaling:
+      enabled: false
