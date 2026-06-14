@@ -22,3 +22,21 @@ spec:
     # since it breaks some other features:
     autoscaling:
       enabled: false
+    # Traefik terminates TLS. Disable Collabora's own TLS, but keep ssl.termination=true
+    # so Collabora generates https/wss links for the browser instead of http/ws:
+    collabora:
+      extra_params: --o:ssl.enable=false --o:ssl.termination=true
+    # Configure Ingress and TLS:
+    ingress:
+      enabled: true
+      className: "traefik"
+      hosts:
+        - host: collabora.homelab.net
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+      tls:
+        - secretName: collabora-tls-secret
+          hosts:
+            - collabora.homelab.net
+
