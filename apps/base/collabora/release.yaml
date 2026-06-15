@@ -22,10 +22,16 @@ spec:
     # since it breaks some other features:
     autoscaling:
       enabled: false
-    # Traefik terminates TLS. Disable Collabora's own TLS, but keep ssl.termination=true
-    # so Collabora generates https/wss links for the browser instead of http/ws:
     collabora:
+      # Traefik terminates TLS. Disable Collabora's own TLS, but keep ssl.termination=true
+      # so Collabora generates https/wss links for the browser instead of http/ws:
       extra_params: --o:ssl.enable=false --o:ssl.termination=true
+
+      existingSecret:
+        enabled: true
+        secretName: "secret-superuser"
+        usernameKey: "username"
+        passwordKey: "password"
     # Configure Ingress and TLS:
     ingress:
       enabled: true
