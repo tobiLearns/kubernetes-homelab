@@ -23,6 +23,9 @@ spec:
     autoscaling:
       enabled: false
     collabora:
+      # Security whitelist: Only listed hosts may send WOPI requests to Collabora:
+      aliasgroups:
+        - host: "https://nextcloud.homelab.net"
       # Traefik terminates TLS. Disable Collabora's own TLS, but keep ssl.termination=true
       # so Collabora generates https/wss links for the browser instead of http/ws:
       extra_params: --o:ssl.enable=false --o:ssl.termination=true

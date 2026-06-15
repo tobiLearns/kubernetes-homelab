@@ -15,3 +15,8 @@ spec:
         name: nextcloud
         namespace: nextcloud
       interval: 24h
+  values:
+    nextcloud:
+      host: nextcloud.homelab.net
+      trustedDomains:
+        - nextcloud.homelab.net
