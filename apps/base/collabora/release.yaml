@@ -45,4 +45,11 @@ spec:
         - secretName: collabora-tls-secret
           hosts:
             - collabora.homelab.net
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "200m"
+      limits:
+        memory: "2Gi"
+        cpu: "2"
 
