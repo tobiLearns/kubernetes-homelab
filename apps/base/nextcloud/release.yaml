@@ -25,3 +25,24 @@ spec:
         secretName: "secret-superuser"
         usernameKey: username
         passwordKey: password
+    ingress:
+      enabled: true
+      className: "traefik"
+      path: /
+      pathType: Prefix
+      hosts:
+        - host: nextcloud.homelab.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: secret-tls
+          hosts:
+            - nextcloud.homelab.net
+    # Traefik terminates TLS and forwards plain HTTP to Nextcloud.
+    # This tells Nextcloud's PHP layer to generate https:// links anyway,
+    # preventing broken redirects and mixed-content errors in the browser.
+    phpClientHttpsFix:
+      enabled: true
+      protocol: https
+

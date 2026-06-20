@@ -5,3 +5,4 @@ resources:
   - repository.yaml
   - release.yaml
   - secret-superuser.yaml
+  - secret-tls.yaml
