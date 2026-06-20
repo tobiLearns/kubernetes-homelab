@@ -20,3 +20,8 @@ spec:
       host: nextcloud.homelab.net
       trustedDomains:
         - nextcloud.homelab.net
+      existingSecret:
+        enabled: true
+        secretName: "secret-superuser"
+        usernameKey: username
+        passwordKey: password
