@@ -48,5 +48,10 @@ spec:
     # Use internal database SQLite (default):
     internalDatabase:
       enabled: true
+    persistence:
+      enabled: true
+      storageClass: "local-path"
+      accessMode: ReadWriteOnce
+      size: 1Gi
 
 
