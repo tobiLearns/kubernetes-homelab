@@ -25,6 +25,14 @@ spec:
         secretName: "secret-superuser"
         usernameKey: username
         passwordKey: password
+      extraVolumes:
+        - name: nfs-documents
+          nfs:
+            server: "nfs"
+            path: "/home/tobi/Documents/"
+      extraVolumeMounts:
+        - name: nfs-documents
+          mountPath: "/mnt/documents"
     ingress:
       enabled: true
       className: "traefik"
