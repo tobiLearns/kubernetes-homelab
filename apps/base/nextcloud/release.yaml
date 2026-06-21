@@ -53,5 +53,12 @@ spec:
       storageClass: "local-path"
       accessMode: ReadWriteOnce
       size: 1Gi
+    # Enable 'redis' as cache to improve Nextclouds performance:
+    redis:
+      enabled: true
+      auth:
+        enabled: true
+        existingSecret: "secret-redis"
+        existingSecretPasswordKey: "password"
 
 
