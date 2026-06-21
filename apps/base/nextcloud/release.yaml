@@ -45,4 +45,8 @@ spec:
     phpClientHttpsFix:
       enabled: true
       protocol: https
+    # Use internal database SQLite (default):
+    internalDatabase:
+      enabled: true
+
 
