@@ -6,3 +6,4 @@ resources:
   - release.yaml
   - secret-superuser.yaml
   - secret-tls.yaml
+  - secret-redis.yaml
