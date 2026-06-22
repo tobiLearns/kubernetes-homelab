@@ -37,9 +37,12 @@ spec:
         supplementalGroups:
           - 2000   # GID of group 'shared' on NFS
       hooks:
+#        before-starting: |
+#          groupadd -g 2000 shared 2>/dev/null || true
+#          usermod -aG shared www-data
         before-starting: |
-          groupadd -g 2000 shared 2>/dev/null || true
-          usermod -aG shared www-data
+          grep -q ':2000:' /etc/group || echo 'shared:x:2000:www-data' >> /etc/group
+
 
     ingress:
       enabled: true
