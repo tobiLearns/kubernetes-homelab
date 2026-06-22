@@ -23,6 +23,7 @@ spec:
     autoscaling:
       enabled: false
     collabora:
+      server_name: "collabora.homelab.net"
       # Security whitelist: Only listed hosts may send WOPI requests to Collabora:
       aliasgroups:
         - host: "https://nextcloud.homelab.net"
