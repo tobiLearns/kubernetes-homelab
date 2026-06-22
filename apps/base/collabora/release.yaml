@@ -69,3 +69,4 @@ spec:
         localhostProfile: "cool-seccomp-profile.json"
       capabilities:
         drop: ["ALL"]
+        add: ["SYS_ADMIN", "SYS_CHROOT", "MKNOD"]
