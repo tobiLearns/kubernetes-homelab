@@ -33,6 +33,9 @@ spec:
       extraVolumeMounts:
         - name: nfs-documents
           mountPath: "/mnt/documents"
+      podSecurityContext:
+        supplementalGroups:
+          - 2000   # GID of group 'shared' on NFS
     ingress:
       enabled: true
       className: "traefik"
