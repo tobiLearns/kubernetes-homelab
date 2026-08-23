@@ -1,0 +1,97 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: nextcloud
+  namespace: nextcloud
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: nextcloud
+      version: "9.1.x"
+
+      sourceRef:
+        kind: HelmRepository
+        name: nextcloud
+        namespace: nextcloud
+      interval: 24h
+  values:
+    nextcloud:
+      host: nextcloud.homelab.net
+      trustedDomains:
+        - nextcloud.homelab.net
+      existingSecret:
+        enabled: true
+        secretName: "secret-superuser"
+        usernameKey: username
+        passwordKey: password
+      extraVolumes:
+        - name: nfs-documents
+          nfs:
+            server: "nfs"
+            path: "/home/tobi/Documents/"
+      extraVolumeMounts:
+        - name: nfs-documents
+          mountPath: "/mnt/documents"
+      podSecurityContext:
+        supplementalGroups:
+          - 2000   # GID of group 'shared' on NFS
+      hooks:
+#        before-starting: |
+#          groupadd -g 2000 shared 2>/dev/null || true
+#          usermod -aG shared www-data
+        before-starting: |
+          grep -q ':2000:' /etc/group || echo 'shared:x:2000:www-data' >> /etc/group
+
+
+    ingress:
+      enabled: true
+      className: "traefik"
+      path: /
+      pathType: Prefix
+      hosts:
+        - host: nextcloud.homelab.net
+          paths:
+            - path: /
+              pathType: Prefix
+      tls:
+        - secretName: secret-tls
+          hosts:
+            - nextcloud.homelab.net
+    # Traefik terminates TLS and forwards plain HTTP to Nextcloud.
+    # This tells Nextcloud's PHP layer to generate https:// links anyway,
+    # preventing broken redirects and mixed-content errors in the browser.
+    phpClientHttpsFix:
+      enabled: true
+      protocol: https
+    # Use internal database SQLite (default):
+    internalDatabase:
+      enabled: true
+    persistence:
+      enabled: true
+      storageClass: "local-path"
+      accessMode: ReadWriteOnce
+      size: 1Gi
+    # Enable 'redis' as cache to improve Nextclouds performance:
+    redis:
+      enabled: true
+      auth:
+        enabled: true
+        existingSecret: "secret-redis"
+        existingSecretPasswordKey: "password"
+    resources:
+      requests:
+        memory: "512Mi"
+        cpu: "250m"
+      limits:
+        memory: "1Gi"
+        cpu: "1"
+    # Enable 'startupProbe' to prevent the Pod from failing 'livenessProbe' before it finishes its first initialization:
+    startupProbe:
+      enabled: true
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      failureThreshold: 30
+
+
+
