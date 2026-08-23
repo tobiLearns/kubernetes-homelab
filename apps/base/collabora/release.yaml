@@ -28,8 +28,7 @@ spec:
         - host: "https://nextcloud.homelab.net"
       # Traefik terminates TLS. Disable Collabora's own TLS, but keep ssl.termination=true
       # so Collabora generates https/wss links for the browser instead of http/ws:
-      extra_params: --o:ssl.enable=false --o:ssl.termination=true
-
+      extra_params: --o:ssl.enable=false --o:ssl.termination=true --o:server_name=collabora.homelab.net --o:net.ssl_verification=false
       existingSecret:
         enabled: true
         secretName: "secret-superuser"
@@ -55,4 +54,20 @@ spec:
       limits:
         memory: "2Gi"
         cpu: "2"
-
+    # Configure 'cool-seccomp-profile', which allows usage of the 'mount' syscall.
+    # This is needed by Collabora to bind-mount a systemplate into its document-jail:
+    installCOOLSeccompProfile: true
+    securityContext:
+#      privileged: false
+#      runAsNonRoot: true
+      # 'allowPrivilegeEscalation' cannot be set: coolforkit-caps acquires its required capabilities (SYS_ADMIN, SYS_CHROOT)
+      # via Linux file capabilities at launch. Setting no_new_privs blocks this mechanism,
+      # preventing coolforkit from spawning and crashing Collabora on startup.
+      #allowPrivilegeEscalation: false
+      seccompProfile:
+        type: Localhost
+        localhostProfile: "cool-seccomp-profile.json"
+      capabilities:
+        add: ["SYS_ADMIN"]
+#        drop: ["ALL"]
+#        add: ["SYS_ADMIN", "SYS_CHROOT", "MKNOD"]
