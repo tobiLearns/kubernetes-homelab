@@ -2,3 +2,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   name: collabora
+  labels:
+    # baseline PSA blocks two things Collabora Online genuinely needs: the
+    # seccomp-profile-installer DaemonSet needs hostPath + privileged to
+    # write a custom seccomp profile onto the host, and the main
+    # collabora-online container needs the SYS_ADMIN capability for its
+    # own internal (LibreOffice) sandboxing. Standing requirement, not
+    # tied to a future removal like the traefik/local-path-storage ones.
+    pod-security.kubernetes.io/enforce: privileged
