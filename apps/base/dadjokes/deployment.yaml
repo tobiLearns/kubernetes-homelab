@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dadjokes
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dadjokes
+  template:
+    metadata:
+      labels:
+        app: dadjokes
+    spec:
+      # Sets the shared volume ownership before the app containers start (containers run as non-root uid 101)
+      # This is a standard k8s pattern to configure volume permissions (e.g., used by Bitnami charts' "volume-permissions" initContainer).
+      # For a plain emptyDir like this one, pod-level 'securityContext.fsGroup: 101' would also be sufficient.
+      # The solution with the initContainer is used here just to show the pattern.
+      initContainers:
+        - name: busybox
+          image: busybox
+          command: ["chown", "-R", "101:101", "/html"]
+          volumeMounts:
+            - name: html
+              mountPath: /html
+      containers:
+        - name: dadjokes
+          image: ghcr.io/tobilearns/dadjokes:1.0.0
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 101
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: html
+              mountPath: /html
+        - name: nginx
+          image: nginxinc/nginx-unprivileged:1.28
+          ports:
+            - containerPort: 8080
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 101
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - name: html
+              mountPath: /usr/share/nginx/html
+              readOnly: true
+      volumes:
+        - name: html
+          emptyDir: {}
