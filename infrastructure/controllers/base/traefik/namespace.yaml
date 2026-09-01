@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: traefik
+  labels:
+    # TEMPORARY: Talos enforces the Kubernetes Pod Security "baseline" policy
+    # cluster-wide by default, which forbids hostPort — but Traefik currently
+    # binds ports 80/443 via hostPort (see release.yaml) as a stand-in for a
+    # real LoadBalancer IP. Scoped to this namespace only, so no other app
+    # namespace loses baseline protection.
+    # Roll back to baseline (i.e. remove this label) once MetalLB is
+    # installed and Traefik's Service switches to type: LoadBalancer.
+    pod-security.kubernetes.io/enforce: privileged

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: local-path-storage
+  labels:
+    # TEMPORARY (see traefik namespace for the same pattern): baseline PSA
+    # blocks hostPath, which local-path-provisioner's helper pods require
+    # to create/delete the backing directories for each PV. Roll back if
+    # this is ever replaced by a real CSI storage driver.
+    pod-security.kubernetes.io/enforce: privileged
