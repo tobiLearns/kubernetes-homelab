@@ -19,3 +19,10 @@ spec:
     crds: Create
   upgrade:
     crds: CreateReplace
+  values:
+    # FRR-K8s is MetalLB's BGP backend (enabled by default).
+    # It is only needed if MetalLB runs in 'BGP mode'.
+    # The current MetalLB installation is configured to use L2Advertisement,
+    # so FRR-K8s can be disabled:
+    frrk8s:
+      enabled: false
