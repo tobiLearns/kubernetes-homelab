@@ -21,6 +21,8 @@ spec:
     crds: CreateReplace
   values:
     service:
+      annotations:
+        metallb.io/loadBalancerIPs: 10.10.10.240
       spec:
         type: LoadBalancer
     ingressClass:
