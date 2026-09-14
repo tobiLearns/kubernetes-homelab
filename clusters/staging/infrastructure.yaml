@@ -12,6 +12,31 @@ spec:
     name: flux-system
   path: ./infrastructure/controllers/staging/
   prune: true
+  # Wait until all resources, defined under '/infrastructure/controllers/', are really running, before marking this Kustomization as 'Ready':
+  wait: true
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: infrastructure-configs
+  namespace: flux-system
+spec:
+  interval: 1m
+  retryInterval: 1m
+  timeout: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  path: ./infrastructure/configs/staging/
+  prune: true
+  # Check, if the referenced Kustomization is in state 'Ready':
+  dependsOn:
+    - name: infrastructure-controllers
   decryption:
     provider: sops
     secretRef:
