@@ -26,3 +26,9 @@ spec:
     # so FRR-K8s can be disabled:
     frrk8s:
       enabled: false
+    speaker:
+      # Kubernetes automatically labels control-plane nodes 'node.kubernetes.io/exclude-from-external-load-balancers'
+      # (standard behavior since 1.22, meant to keep external LB traffic off control-plane nodes in a normal multi-node cluster)
+      # On a one node cluster, this label has to be ignored:
+      ignoreExcludeLB: true
+
