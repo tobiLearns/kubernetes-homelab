@@ -1,0 +1,38 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: node-exporter
+  namespace: monitoring-node-exporter
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: prometheus-node-exporter
+      version: "4.x"
+
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: monitoring-node-exporter
+      interval: 12h
+  values:
+    # The values below mirror what kube-prometheus-stack set for its bundled
+    # node-exporter subchart, so that its Grafana dashboards and alert rules
+    # (which expect job="node-exporter") keep working.
+    podLabels:
+      jobLabel: node-exporter
+    extraArgs:
+      - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|run/containerd/.+|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
+      - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|erofs)$
+    service:
+      portName: http-metrics
+      labels:
+        jobLabel: node-exporter
+    prometheus:
+      monitor:
+        enabled: true
+        jobLabel: jobLabel
+        # Prometheus of kube-prometheus-stack only picks up ServiceMonitors
+        # carrying the label 'release: <name of the stack's HelmRelease>':
+        additionalLabels:
+          release: kube-prometheus-stack
