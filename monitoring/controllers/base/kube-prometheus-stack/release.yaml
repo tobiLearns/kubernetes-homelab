@@ -39,3 +39,7 @@ spec:
             hosts:
               - grafana.homelab.net
 
+    # node-exporter needs host access, so it runs as its own release in a
+    # dedicated privileged namespace (see ../prometheus-node-exporter) instead of here:
+    nodeExporter:
+      enabled: false
