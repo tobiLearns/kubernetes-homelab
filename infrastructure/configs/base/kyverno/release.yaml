@@ -1,0 +1,44 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kyverno-policies
+  namespace: kyverno
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: kyverno-policies
+      version: "3.9.x"
+
+      sourceRef:
+        kind: HelmRepository
+        # Defined together with the Kyverno controller (infrastructure/controllers/base/kyverno);
+        # the 'infrastructure-configs' Kustomization depends on 'infrastructure-controllers'.
+        name: kyverno
+        namespace: kyverno
+      interval: 12h
+  values:
+    # Pod Security Standard 'baseline' as Kyverno (CEL) ValidatingPolicies.
+    # Talos already enforces 'baseline' via PSA, except in the namespaces
+    # labelled 'privileged'. These policies take over there, with narrow
+    # PolicyExceptions per workload instead of a blanket namespace exemption.
+    podSecurityStandard: baseline
+    # Audit only for now: violations show up in the PolicyReports
+    # ('kubectl get polr -A'), but nothing is blocked. Switch to Enforce
+    # once the exceptions are verified.
+    validationFailureAction: Audit
+    # Single node: if the Kyverno webhook is down, do not block pod creation
+    # (the chart default 'Fail' could even block Kyverno's own restart).
+    failurePolicy: Ignore
+    # Excluded to avoid locking the cluster out of its own repair path:
+    # kube-system (PSA-exempt on Talos anyway), flux-system (GitOps) and
+    # kyverno (a policy must not block its own controller). These three
+    # still get PSA 'baseline' from Talos, except kube-system.
+    # Privileged namespaces (e.g. metallb-system) are deliberately NOT
+    # excluded: PSA allows everything there, so these policies are the only
+    # check left. Workloads that really need more get a PolicyException.
+    vpolExclude:
+      excludeNamespaces:
+        - kube-system
+        - flux-system
+        - kyverno
