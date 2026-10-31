@@ -27,10 +27,14 @@ spec:
     # The exceptions were verified first in 'Audit' mode (PolicyReports, 'kubectl get polr -A')
     # and by recreating the exempted pods under Deny.
     validationFailureAction: Enforce
-    # What happens if the Kyverno webhook is unreachable: 'Ignore' admits the
-    # request unchecked. Temporary, to be switched to 'Fail' (reject) after the
-    # tests with Kyverno down and a node reboot.
-    failurePolicy: Ignore
+    # What happens if the Kyverno webhook is unreachable: 'Fail' rejects the
+    # request (safety over availability). Pods in 'kyverno', 'kube-system' and
+    # 'flux-system' are not affected (see below), so Flux can always repair
+    # Kyverno itself.
+    # Break-glass if Kyverno cannot start:
+    #   kubectl delete validatingwebhookconfiguration kyverno-resource-validating-webhook-cfg
+    # (Kyverno recreates it on start).
+    failurePolicy: Fail
     # Excluded to avoid locking the cluster out of its own repair path:
     # kube-system (PSA-exempt on Talos anyway), flux-system (GitOps) and
     # kyverno (a policy must not block its own controller). These three

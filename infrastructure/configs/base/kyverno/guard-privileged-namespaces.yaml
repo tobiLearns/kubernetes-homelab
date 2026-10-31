@@ -26,7 +26,8 @@ metadata:
       namespaces on the allowlist of this policy may carry this label, so a
       new or forgotten namespace cannot end up unprotected by accident.
 spec:
-  failurePolicy: Ignore
+  # Reject namespace changes while the Kyverno webhook is unreachable (see release.yaml).
+  failurePolicy: Fail
   matchConstraints:
     resourceRules:
       - apiGroups: [""]
