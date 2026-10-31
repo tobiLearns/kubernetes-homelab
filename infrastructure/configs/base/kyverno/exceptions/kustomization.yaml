@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - metallb-speaker.yaml
   - node-exporter.yaml
+  - local-path-helper.yaml
