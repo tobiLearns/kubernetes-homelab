@@ -46,6 +46,5 @@ spec:
       message: >-
         The label pod-security.kubernetes.io/enforce=privileged is only allowed on
         the namespaces listed in the policy 'guard-privileged-namespaces'.
-  # Audit first; switch to Deny together with the other policies.
   validationActions:
-    - Audit
+    - Deny

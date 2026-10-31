@@ -23,12 +23,13 @@ spec:
     # labelled 'privileged'. These policies take over there, with narrow
     # PolicyExceptions per workload instead of a blanket namespace exemption.
     podSecurityStandard: baseline
-    # Audit only for now: violations show up in the PolicyReports
-    # ('kubectl get polr -A'), but nothing is blocked. Switch to Enforce
-    # once the exceptions are verified.
-    validationFailureAction: Audit
-    # Single node: if the Kyverno webhook is down, do not block pod creation
-    # (the chart default 'Fail' could even block Kyverno's own restart).
+    # Violating pods are rejected.
+    # The exceptions were verified first in 'Audit' mode (PolicyReports, 'kubectl get polr -A')
+    # and by recreating the exempted pods under Deny.
+    validationFailureAction: Enforce
+    # What happens if the Kyverno webhook is unreachable: 'Ignore' admits the
+    # request unchecked. Temporary, to be switched to 'Fail' (reject) after the
+    # tests with Kyverno down and a node reboot.
     failurePolicy: Ignore
     # Excluded to avoid locking the cluster out of its own repair path:
     # kube-system (PSA-exempt on Talos anyway), flux-system (GitOps) and
