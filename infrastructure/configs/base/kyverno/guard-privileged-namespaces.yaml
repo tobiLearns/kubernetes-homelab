@@ -1,0 +1,41 @@
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: guard-privileged-namespaces
+  annotations:
+    policies.kyverno.io/title: Guard privileged namespaces
+    policies.kyverno.io/category: Pod Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      A namespace labelled 'pod-security.kubernetes.io/enforce: privileged'
+      switches off Pod Security Admission for everything in it. Only the
+      namespaces on the allowlist below may carry this label, so a new or
+      forgotten namespace cannot end up unprotected by accident. Every
+      namespace on the list is covered by the baseline policies in this
+      directory, with narrow PolicyExceptions for the workloads that need more.
+      To allow another namespace, add it to the list in a reviewed commit.
+spec:
+  failurePolicy: Ignore
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [namespaces]
+  validations:
+    - expression: >-
+        !has(object.metadata.labels) ||
+        !('pod-security.kubernetes.io/enforce' in object.metadata.labels) ||
+        object.metadata.labels['pod-security.kubernetes.io/enforce'] != 'privileged' ||
+        object.metadata.name in [
+          'local-path-storage',
+          'metallb-system',
+          'monitoring-node-exporter'
+        ]
+      message: >-
+        The label pod-security.kubernetes.io/enforce=privileged is only allowed on
+        the namespaces listed in the policy 'guard-privileged-namespaces'.
+  # Audit first; switch to Deny together with the other policies.
+  validationActions:
+    - Audit
