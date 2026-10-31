@@ -17,9 +17,14 @@ spec:
       name: disallow-host-ports
   matchConditions:
     - name: metallb-speaker-pods
+      # Pods without these labels must evaluate to 'false', not to an error
+      # ('no such key'), hence the 'in' checks before reading the labels.
       expression: >-
         object.metadata.namespace == 'metallb-system' &&
+        has(object.metadata.labels) &&
+        'app.kubernetes.io/name' in object.metadata.labels &&
         object.metadata.labels['app.kubernetes.io/name'] == 'metallb' &&
+        'app.kubernetes.io/component' in object.metadata.labels &&
         object.metadata.labels['app.kubernetes.io/component'] == 'speaker'
   properties:
     reason: ARP replies in L2 mode need hostNetwork, NET_RAW and host ports

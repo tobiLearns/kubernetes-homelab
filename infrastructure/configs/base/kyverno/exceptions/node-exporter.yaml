@@ -16,8 +16,12 @@ spec:
       name: disallow-host-ports
   matchConditions:
     - name: node-exporter-pods
+      # Pods without this label must evaluate to 'false', not to an error
+      # ('no such key'), hence the 'in' check before reading the label.
       expression: >-
         object.metadata.namespace == 'monitoring-node-exporter' &&
+        has(object.metadata.labels) &&
+        'app.kubernetes.io/name' in object.metadata.labels &&
         object.metadata.labels['app.kubernetes.io/name'] == 'prometheus-node-exporter'
   properties:
     reason: host metrics need hostNetwork, hostPID, hostPath and a host port
