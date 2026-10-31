@@ -3,8 +3,8 @@ kind: Namespace
 metadata:
   name: local-path-storage
   labels:
-    # TEMPORARY (see traefik namespace for the same pattern): baseline PSA
-    # blocks hostPath, which local-path-provisioner's helper pods require
-    # to create/delete the backing directories for each PV. Roll back if
-    # this is ever replaced by a real CSI storage driver.
+    # Talos enforces the PSA 'baseline' profile. That would block 'hostPath',
+    # which local-path-provisioner's short-lived helper pods require to create/delete the backing directory of each PV.
+    # Roll back if this is ever replaced by a real CSI storage driver.
+    # Allowlist for this label: infrastructure/configs/base/kyverno/guard-privileged-namespaces.yaml
     pod-security.kubernetes.io/enforce: privileged

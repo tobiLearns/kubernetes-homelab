@@ -3,9 +3,10 @@ kind: Namespace
 metadata:
   name: monitoring-node-exporter
   labels:
-    # baseline PSA blocks node-exporter, which needs hostNetwork, hostPID,
-    # hostPath (/proc, /sys, /) and hostPort to read host-level metrics.
+    # Talos enforces the PSA 'baseline' profile. That would block node-exporter,
+    # which needs hostNetwork, hostPID, hostPath (/proc, /sys, /) and hostPort to read host-level metrics.
     # Namespace-wide exemption since PSA has no per-workload granularity,
     # so node-exporter lives alone in this namespace and no other workload
     # inherits the exemption.
+    # Allowlist for this label: infrastructure/configs/base/kyverno/guard-privileged-namespaces.yaml
     pod-security.kubernetes.io/enforce: privileged

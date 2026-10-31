@@ -1,0 +1,26 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: metallb-speaker
+  namespace: kyverno
+spec:
+  # The speaker DaemonSet answers ARP requests on the node's real network
+  # interface (L2 mode), which needs hostNetwork + NET_RAW, plus the host
+  # ports of its memberlist. Only these three checks are skipped, and only
+  # for the speaker pods; the MetalLB controller is still fully checked.
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: disallow-capabilities
+    - kind: ValidatingPolicy
+      name: disallow-host-namespaces
+    - kind: ValidatingPolicy
+      name: disallow-host-ports
+  matchConditions:
+    - name: metallb-speaker-pods
+      expression: >-
+        object.metadata.namespace == 'metallb-system' &&
+        object.metadata.labels['app.kubernetes.io/name'] == 'metallb' &&
+        object.metadata.labels['app.kubernetes.io/component'] == 'speaker'
+  properties:
+    reason: ARP replies in L2 mode need hostNetwork, NET_RAW and host ports
+    ticket: https://github.com/tobiLearns/kubernetes-homelab/issues/31

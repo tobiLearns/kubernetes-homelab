@@ -1,0 +1,51 @@
+# How Pod Security works in this cluster:
+#  1. Talos enforces Pod Security Admission (PSA) 'baseline' for all namespaces
+#     except kube-system.
+#  2. A namespace labelled 'pod-security.kubernetes.io/enforce: privileged' is
+#     exempt from PSA entirely. PSA has no per-workload exceptions, and a
+#     Kyverno PolicyException cannot override a PSA rejection, so the label
+#     is needed wherever a workload requires more than 'baseline' allows.
+#  3. In those namespaces Kyverno takes over: the baseline policies from the
+#     'kyverno-policies' release (release.yaml) check every pod.
+#     Workloads that really need more get a narrow PolicyException (exceptions/).
+#  4. This policy makes sure that no namespace becomes privileged unnoticed:
+#     the label is only allowed on the namespaces in the list below. Whoever
+#     adds a namespace to the list also adds its PolicyExceptions.
+apiVersion: policies.kyverno.io/v1
+kind: ValidatingPolicy
+metadata:
+  name: guard-privileged-namespaces
+  annotations:
+    policies.kyverno.io/title: Guard privileged namespaces
+    policies.kyverno.io/category: Pod Security
+    policies.kyverno.io/severity: high
+    policies.kyverno.io/subject: Namespace
+    policies.kyverno.io/description: >-
+      A namespace, labelled 'pod-security.kubernetes.io/enforce: privileged',
+      switches off Pod Security Admission for everything in it. Only the
+      namespaces on the allowlist of this policy may carry this label, so a
+      new or forgotten namespace cannot end up unprotected by accident.
+spec:
+  failurePolicy: Ignore
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: [v1]
+        operations: [CREATE, UPDATE]
+        resources: [namespaces]
+  validations:
+    - expression: >-
+        !has(object.metadata.labels) ||
+        !('pod-security.kubernetes.io/enforce' in object.metadata.labels) ||
+        object.metadata.labels['pod-security.kubernetes.io/enforce'] != 'privileged' ||
+        object.metadata.name in [
+          'local-path-storage',
+          'metallb-system',
+          'monitoring-node-exporter'
+        ]
+      message: >-
+        The label pod-security.kubernetes.io/enforce=privileged is only allowed on
+        the namespaces listed in the policy 'guard-privileged-namespaces'.
+  # Audit first; switch to Deny together with the other policies.
+  validationActions:
+    - Audit

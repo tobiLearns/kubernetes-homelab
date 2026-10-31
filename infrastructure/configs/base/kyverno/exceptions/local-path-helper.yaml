@@ -1,0 +1,22 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: local-path-helper
+  namespace: kyverno
+spec:
+  # local-path-provisioner starts a short-lived helper pod to create ('-create-pvc-')
+  # or remove ('-delete-pvc-') the volume directory on the node, which needs a
+  # hostPath mount. The helper pods carry no labels, so they can only be matched
+  # by namespace and name. The provisioner Deployment itself passes all checks.
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: disallow-host-path
+  matchConditions:
+    - name: local-path-helper-pods
+      expression: >-
+        object.metadata.namespace == 'local-path-storage' &&
+        (object.metadata.name.startsWith('helper-pod-create-pvc-') ||
+         object.metadata.name.startsWith('helper-pod-delete-pvc-'))
+  properties:
+    reason: volume directories are created and removed on the node via hostPath
+    ticket: https://github.com/tobiLearns/kubernetes-homelab/issues/31

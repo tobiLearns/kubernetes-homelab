@@ -1,0 +1,24 @@
+apiVersion: policies.kyverno.io/v1
+kind: PolicyException
+metadata:
+  name: node-exporter
+  namespace: kyverno
+spec:
+  # node-exporter reads host-level metrics: hostNetwork + hostPID, hostPath
+  # mounts of /proc, /sys and / (read-only), and a host port. Only these
+  # three checks are skipped, and only for the node-exporter pods.
+  policyRefs:
+    - kind: ValidatingPolicy
+      name: disallow-host-namespaces
+    - kind: ValidatingPolicy
+      name: disallow-host-path
+    - kind: ValidatingPolicy
+      name: disallow-host-ports
+  matchConditions:
+    - name: node-exporter-pods
+      expression: >-
+        object.metadata.namespace == 'monitoring-node-exporter' &&
+        object.metadata.labels['app.kubernetes.io/name'] == 'prometheus-node-exporter'
+  properties:
+    reason: host metrics need hostNetwork, hostPID, hostPath and a host port
+    ticket: https://github.com/tobiLearns/kubernetes-homelab/issues/31

@@ -1,0 +1,40 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kyverno
+  namespace: kyverno
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: kyverno
+      version: "3.9.x"
+
+      sourceRef:
+        kind: HelmRepository
+        name: kyverno
+        namespace: kyverno
+      interval: 12h
+  install:
+    crds: Create
+  upgrade:
+    crds: CreateReplace
+  values:
+    features:
+      policyExceptions:
+        # Without this flag, PolicyExceptions are accepted but silently ignored.
+        enabled: true
+        # Only PolicyExceptions in this namespace are honoured, so a workload
+        # namespace cannot grant itself an exception. They are kept together in
+        # infrastructure/configs/base/kyverno/exceptions/.
+        namespace: kyverno
+    # Single node cluster: the chart's HA defaults (several replicas per
+    # controller) would only add load without adding availability.
+    admissionController:
+      replicas: 1
+    backgroundController:
+      replicas: 1
+    cleanupController:
+      replicas: 1
+    reportsController:
+      replicas: 1
