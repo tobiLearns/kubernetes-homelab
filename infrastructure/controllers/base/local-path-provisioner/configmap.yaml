@@ -4,8 +4,11 @@ metadata:
   name: local-path-config
   namespace: local-path-storage
 data:
-  # Talos: /opt is a memory-backed overlay (wiped on reboot). /var is the
-  # real persistent EPHEMERAL partition, so store volumes there instead.
+  # Talos's local-storage guide recommends storing volumes under /var/mnt, instead of the provisioner's default /opt.
+  # /var is the EPHEMERAL partition, which Talos documents as surviving reboots and upgrades (wiped only by a reset).
+  # /opt is not documented as persistent.
+  # This requires an extraMount in the Talos machine config of the kubelet for /var/mnt,
+  # otherwise the volume paths are not visible to the kubelet.
   config.json: |-
     {
       "nodePathMap":[
