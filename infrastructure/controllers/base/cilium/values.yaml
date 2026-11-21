@@ -1,0 +1,15 @@
+# Talos: Cilium uses Kubernetes' pod CIDR allocation.
+ipam:
+  mode: kubernetes
+# Variant "with kube-proxy": Talos' kube-proxy keeps handling Services.
+kubeProxyReplacement: false
+# Talos already mounts cgroup v2 and bpffs; Cilium must not mount them itself.
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+# Capability sets from the Talos guide (SYS_MODULE is dropped on purpose).
+securityContext:
+  capabilities:
+    ciliumAgent: [CHOWN, KILL, NET_ADMIN, NET_RAW, IPC_LOCK, SYS_ADMIN, SYS_RESOURCE, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    cleanCiliumState: [NET_ADMIN, SYS_ADMIN, SYS_RESOURCE]
